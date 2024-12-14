@@ -26,6 +26,9 @@ export default function buildScavMarksmanWaves(
     maxBotPerZone,
     scavMaxGroupSize,
     scavDifficulty,
+    scavDifficultyMax,
+    scavDifficultyScalingType,
+    scavDifficultyScalingFactor,
     moreScavGroups,
   } = config;
 
@@ -161,6 +164,9 @@ export default function buildScavMarksmanWaves(
       0.5,
       WildSpawnType.MARKSMAN,
       0.5,
+      0.5,
+      0, // constant scaling factor
+      1,
       false,
       2,
       [],
@@ -187,6 +193,9 @@ export default function buildScavMarksmanWaves(
       scavWaveDistribution,
       WildSpawnType.ASSAULT,
       scavDifficulty,
+      scavDifficultyMax,
+      scavDifficultyScalingType,
+      scavDifficultyScalingFactor,
       false,
       scavMaxGroupSize,
       map === "gzHigh" ? [] : scavZones,

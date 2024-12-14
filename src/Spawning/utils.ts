@@ -14,6 +14,9 @@ export const waveBuilder = (
   waveDistribution: number,
   wildSpawnType: "marksman" | "assault",
   difficulty: number,
+  difficultyMax: number,
+  difficultyScalingType: number,
+  difficultyScalingFactor: number,
   isPlayer: boolean,
   maxSlots: number,
   combinedZones: string[] = [],
@@ -47,7 +50,8 @@ export const waveBuilder = (
     const max = !offset && waves.length < 1 ? 0 : timeStart + 10;
 
     if (waves.length >= 1 || offset) timeStart = timeStart + stage;
-    const BotPreset = getDifficulty(difficulty);
+    let time = timeStart / timeLimit; // Should be between [0, 1] with how far into the raid it is
+    const BotPreset = getDifficultyRamp(difficulty, difficultyMax, difficultyScalingType, difficultyScalingFactor, time);
     // console.log(wildSpawnType, BotPreset);
     // Math.round((1 - waves.length / totalWaves) * maxSlots) || 1;
     const slotMax =
