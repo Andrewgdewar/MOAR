@@ -106,6 +106,32 @@ export const getDifficulty = (diff: number) => {
   }
 };
 
+// Linearlly interpolates between a and b by t and clamps between the two values
+const lerp = (a: number, b: number, t: number) => {
+  let res = a + ((b - a) * t);
+  return res > b ? b : res < a ? a : res;
+};
+
+/**
+ * t = [0, 1]
+ * scaleType = {0, 1, 2}
+ * scaleFactor = (0, inf)
+ * diffMax = (diff, inf)
+ * */
+export const getDifficultyRamp = (diff: number, diffMax: number, scaleType: number, scaleFactor: number, t: number) => {
+  switch (scaleType) {
+    case 1: // linear
+        let linearDifficulty = lerp(diff, diffMax, scaleFactor * t);
+        return getDifficulty(linearDifficulty);
+    case 2: // exponential
+        let expDifficulty = lerp(diff, diffMax, scaleFactor * t * t);
+        return getDifficulty(expDifficulty);
+    case 0: // constant
+    default: // unknown value, default to constant
+        return getDifficulty(diff);
+  }
+};
+
 export const shuffle = <n>(array: any): n => {
   let currentIndex = array.length,
     randomIndex;
