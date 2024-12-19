@@ -14,6 +14,9 @@ export const waveBuilder = (
   waveDistribution: number,
   wildSpawnType: "marksman" | "assault",
   difficulty: number,
+  difficultyMax: number,
+  difficultyScalingType: number,
+  difficultyScalingFactor: number,
   isPlayer: boolean,
   maxSlots: number,
   combinedZones: string[] = [],
@@ -47,7 +50,8 @@ export const waveBuilder = (
     const max = !offset && waves.length < 1 ? 0 : timeStart + 10;
 
     if (waves.length >= 1 || offset) timeStart = timeStart + stage;
-    const BotPreset = getDifficulty(difficulty);
+    let time = timeStart / timeLimit; // Should be between [0, 1] with how far into the raid it is
+    const BotPreset = getDifficultyRamp(difficulty, difficultyMax, difficultyScalingType, difficultyScalingFactor, time);
     // console.log(wildSpawnType, BotPreset);
     // Math.round((1 - waves.length / totalWaves) * maxSlots) || 1;
     const slotMax =
@@ -103,6 +107,32 @@ export const getDifficulty = (diff: number) => {
       return "hard";
     default:
       return "impossible";
+  }
+};
+
+// Linearlly interpolates between a and b by t and clamps between the two values
+const lerp = (a: number, b: number, t: number) => {
+  let res = a + ((b - a) * t);
+  return res > b ? b : res < a ? a : res;
+};
+
+/**
+ * t = [0, 1]
+ * scaleType = {0, 1, 2}
+ * scaleFactor = (0, inf)
+ * diffMax = (diff, inf)
+ * */
+export const getDifficultyRamp = (diff: number, diffMax: number, scaleType: number, scaleFactor: number, t: number) => {
+  switch (scaleType) {
+    case 1: // linear
+        let linearDifficulty = lerp(diff, diffMax, scaleFactor * t);
+        return getDifficulty(linearDifficulty);
+    case 2: // exponential
+        let expDifficulty = lerp(diff, diffMax, scaleFactor * t * t);
+        return getDifficulty(expDifficulty);
+    case 0: // constant
+    default: // unknown value, default to constant
+        return getDifficulty(diff);
   }
 };
 

@@ -3,6 +3,9 @@
 
   "pmcDifficulty": 0.6,
   "scavDifficulty": 0.4,
+  "scavDifficultyMax": 0.8,
+  "scavDifficultyScalingFactor": 1,
+  "scavDifficultyScalingType": 0,
 
   "scavWaveDistribution": 0.5,
   "scavWaveQuantity": 1,
