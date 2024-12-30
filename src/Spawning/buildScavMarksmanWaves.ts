@@ -27,6 +27,7 @@ export default function buildScavMarksmanWaves(
     scavMaxGroupSize,
     scavDifficulty,
     moreScavGroups,
+    allOpenZones,
   } = config;
 
   for (let index = 0; index < locationList.length; index++) {
@@ -112,20 +113,22 @@ export default function buildScavMarksmanWaves(
       ];
     }
 
-    const scavZones = shuffle<string[]>([
-      ...new Set(
-        [...locationList[index].base.SpawnPointParams]
-          .filter(
-            ({ Categories, Sides, BotZoneName }) =>
-              !!BotZoneName &&
-              Sides.includes("Savage") &&
-              !Categories.includes("Boss")
-          )
-          .map(({ BotZoneName }) => BotZoneName)
-          .filter((name) => !sniperLocations.has(name))
-      ),
-    ]);
-
+    const scavZones = allOpenZones
+      ? []
+      : shuffle<string[]>([
+          ...new Set(
+            [...locationList[index].base.SpawnPointParams]
+              .filter(
+                ({ Categories, Sides, BotZoneName }) =>
+                  !!BotZoneName &&
+                  !Categories.includes("Boss") &&
+                  (Sides.includes("Savage") || Sides.includes("All"))
+              )
+              .map(({ BotZoneName }) => BotZoneName)
+              .filter((name) => !sniperLocations.has(name))
+          ),
+        ]);
+    // console.log(map, scavZones.length);
     // Reduced Zone Delay
     locationList[index].base.SpawnPointParams = locationList[
       index

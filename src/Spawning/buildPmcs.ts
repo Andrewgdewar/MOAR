@@ -24,23 +24,30 @@ export default function buildPmcs(
 
     const { pmcHotZones = [] } = (mapConfig?.[map] as MapSettings) || {};
 
-    let pmcZones = shuffle<string[]>([
-      ...new Set(
-        [...locationList[index].base.SpawnPointParams]
-          .filter(
-            ({ Categories, BotZoneName }) =>
-              !!BotZoneName &&
-              (Categories.includes("Player") ||
-                (map === "laboratory" &&
-                  !BotZoneName.includes("BotZoneGate"))) &&
-              !BotZoneName.includes("snipe")
-          )
-          .map(({ BotZoneName, ...rest }) => {
-            return BotZoneName;
-          })
-      ),
-      ...pmcHotZones,
-    ]);
+    let pmcZones =
+      (config.allOpenZones || config.pmcOpenZones) && map !== "laboratory"
+        ? []
+        : shuffle<string[]>([
+            ...new Set(
+              [...locationList[index].base.SpawnPointParams]
+                .filter(
+                  ({ Categories, BotZoneName, Sides }) =>
+                    !!BotZoneName &&
+                    !BotZoneName.includes("snipe") &&
+                    (Categories.includes("Player") ||
+                      Sides.includes("All") ||
+                      Sides.includes("Pmc") ||
+                      (map === "laboratory" &&
+                        !BotZoneName.includes("BotZoneGate")))
+                )
+                .map(({ BotZoneName, ...rest }) => {
+                  return BotZoneName;
+                })
+            ),
+            ...pmcHotZones,
+          ]);
+
+    // console.log(map, pmcZones.length);
     // Make labs have only named zones
     if (map === "laboratory") {
       pmcZones = new Array(10).fill(pmcZones).flat(1);

@@ -13,7 +13,7 @@
   "pmcOpenZones": true,
   "allOpenZones": false,
 
-  "pmcWaveDistribution": 0.8,
+  "pmcWaveDistribution": 0.7,
   "pmcWaveQuantity": 1,
 
   "zombiesEnabled": false,
