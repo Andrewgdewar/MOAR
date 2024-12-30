@@ -127,7 +127,7 @@ export const buildWaves = (container: DependencyContainer) => {
     rezervbase: { pmcbot: { min: 0, max: 0 } },
   };
 
-  updateSpawnLocations(locationList);
+  updateSpawnLocations(locationList, config);
 
   setEscapeTimeOverrides(locationList, _mapConfig, Logger, config);
 

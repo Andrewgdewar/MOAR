@@ -9,6 +9,10 @@
 
   "startingPmcs": false,
 
+  "playerOpenZones": false,
+  "pmcOpenZones": true,
+  "allOpenZones": false,
+
   "pmcWaveDistribution": 0.8,
   "pmcWaveQuantity": 1,
 
@@ -18,7 +22,7 @@
   "zombieHealth": 1,
 
   "maxBotCap": 25,
-  "maxBotPerZone": 7,
+  "maxBotPerZone": 6,
 
   "moreScavGroups": false,
   "morePmcGroups": false,
