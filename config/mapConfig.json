@@ -134,7 +134,7 @@
     "smoothingDistribution": 0.9,
     "mapCullingNearPointValuePlayer": 6,
     "mapCullingNearPointValue": 13,
-    "spawnMinDistance": 70,
+    "spawnMinDistance": 40,
     "pmcWaveCount": 14,
     "scavWaveCount": 28,
     "zombieWaveCount": 10,
