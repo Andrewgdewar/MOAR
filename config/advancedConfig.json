@@ -1,3 +1,4 @@
 {
-    "ActivateSpawnCullingOnServerStart": false
+    "ActivateSpawnCullingOnServerStart": false,
+    "MarksmanDifficultyChanges": true
 }

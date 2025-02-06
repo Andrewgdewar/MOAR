@@ -21,6 +21,8 @@ import buildPmcs from "./buildPmcs";
 import { enforceSmoothing, setEscapeTimeOverrides } from "./utils";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import updateSpawnLocations from "./updateSpawnLocations";
+import marksmanChanges from "./marksmanChanges";
+import advancedConfig from "../../config/advancedConfig.json";
 
 export const buildWaves = (container: DependencyContainer) => {
   const configServer = container.resolve<ConfigServer>("ConfigServer");
@@ -131,15 +133,16 @@ export const buildWaves = (container: DependencyContainer) => {
     rezervbase: { pmcbot: { min: 0, max: 0 } },
   };
 
-  if (
-    config.startingPmcs &&
-    (!config.randomSpawns || config.spawnSmoothing)
-  ) {
+  if (config.startingPmcs && (!config.randomSpawns || config.spawnSmoothing)) {
     Logger.warning(
       `[MOAR] Starting pmcs turned on, turning off cascade system and smoothing.\n`
     );
     config.spawnSmoothing = false;
     config.randomSpawns = true;
+  }
+
+  if (advancedConfig.MarksmanDifficultyChanges) {
+    marksmanChanges(bots);
   }
 
   updateSpawnLocations(locationList);
