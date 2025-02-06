@@ -35,8 +35,8 @@ export default function buildPmcs(
 
     let pmcZones = getSortedSpawnPointList(
       locationList[index].base.SpawnPointParams.filter(
-        (point) => point["type"] === "nonBoss"
-      ).filter((_, sIndex) => sIndex % 3 === 0),
+        (point) => point["type"] === "pmc"
+      ),
       x,
       y,
       z,

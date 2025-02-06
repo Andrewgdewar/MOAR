@@ -14,7 +14,7 @@ export default function updateSpawnLocations(locationList: ILocation[]) {
     const mapSpawns = globalValues.indexedMapSpawns[index];
 
     const filteredSpawns = [...mapSpawns].filter((point) => {
-      if (point?.Categories[0] === "Player") {
+      if (point?.["type"] === "coop") {
         playerSpawns.push(point);
         return false;
       }
