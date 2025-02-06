@@ -59,12 +59,26 @@ export function buildBossWaves(
 
       // Performance changes
       locationList[indx].base.BossLocationSpawn.forEach((Boss, bIndex) => {
+        if (Boss.BossChance < 1) return;
         if (!!bossPerformanceHash[Boss.BossName || ""]) {
-          const varsToUpdate = bossPerformanceHash[Boss.BossName];
+          const varsToUpdate: Record<string, any> =
+            bossPerformanceHash[Boss.BossName];
+          // console.log(
+          //   Boss.BossName + "\n",
+          //   Object.keys(varsToUpdate).map((key) => key + " " + Boss[key])
+          // );
           locationList[indx].base.BossLocationSpawn[bIndex] = {
             ...Boss,
             ...varsToUpdate,
           };
+          // console.log(
+          //   Object.keys(varsToUpdate).map(
+          //     (key) =>
+          //       key +
+          //       " " +
+          //       locationList[indx].base.BossLocationSpawn[bIndex][key]
+          //   )
+          // );
         }
       });
 
@@ -272,6 +286,9 @@ export function buildBossWaves(
         index
       ].base.BossLocationSpawn.map(
         ({ BossChance, BossName, TriggerId }, bossIndex) => {
+          if (BossChance < 1) {
+            return locationList[index].base.BossLocationSpawn[bossIndex];
+          }
           if (
             !TriggerId &&
             !bossesToSkip.has(BossName) &&

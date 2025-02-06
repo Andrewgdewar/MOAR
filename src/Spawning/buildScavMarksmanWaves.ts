@@ -189,11 +189,11 @@ export default function buildScavMarksmanWaves(
     // console.log(map);
     const snipers = buildBotWaves(
       Math.min(sniperQuantity, sniperLocations.length),
-      timeLimit,///30,
+      timeLimit, ///30,
       sniperMaxGroupSize,
       sniperGroupChance,
       sniperLocations,
-      1.7,
+      0.84,
       WildSpawnType.MARKSMAN,
       true,
       0.3,

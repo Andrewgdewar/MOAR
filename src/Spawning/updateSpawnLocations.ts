@@ -6,7 +6,10 @@ import { ISpawnPointParam } from "@spt/models/eft/common/ILocationBase";
 import { globalValues } from "../GlobalValues";
 import getSortedSpawnPointList from "./spawnZoneUtils";
 
-export default function updateSpawnLocations(locationList: ILocation[]) {
+export default function updateSpawnLocations(
+  locationList: ILocation[],
+  config: typeof _config
+) {
   for (let index = 0; index < locationList.length; index++) {
     const map = configLocations[index];
     const playerSpawns: ISpawnPointParam[] = [];
@@ -14,7 +17,7 @@ export default function updateSpawnLocations(locationList: ILocation[]) {
     const mapSpawns = globalValues.indexedMapSpawns[index];
 
     const filteredSpawns = [...mapSpawns].filter((point) => {
-      if (point?.Categories[0] === "Player") {
+      if (point?.["type"] === "coop") {
         playerSpawns.push(point);
         return false;
       }
@@ -52,6 +55,8 @@ export default function updateSpawnLocations(locationList: ILocation[]) {
 
     locationList[index].base.OpenZones = listToAddToOpenZones.join(",");
 
-    locationList[index].base.SpawnPointParams.push(playerSpawn);
+    locationList[index].base.SpawnPointParams.push(
+      ...(config.randomSpawns ? [playerSpawn] : playerSpawns)
+    );
   }
 }

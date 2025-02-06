@@ -17,6 +17,7 @@ import { saveToFile } from "../utils";
 import { Ixyz } from "@spt/models/eft/common/Ixyz";
 import { BotSpawns } from "../Spawns";
 import { updateAllBotSpawns } from "../Spawns/updateUtils";
+import { CoopUUIDS } from "./CoopUUIDS";
 
 export const setupSpawns = (container: DependencyContainer) => {
   const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
@@ -26,6 +27,13 @@ export const setupSpawns = (container: DependencyContainer) => {
 
   const botSpawnHash = BotSpawns;
 
+  const mapsToExcludeFromPlayerCulling = new Set([
+    "factory4_day",
+    "factory4_night",
+    "laboratory",
+  ]);
+
+  const CoopUUIDSet = new Set(CoopUUIDS);
   originalMapList.forEach((map, mapIndex) => {
     const allZones = [
       ...new Set(
@@ -69,11 +77,11 @@ export const setupSpawns = (container: DependencyContainer) => {
             sniperSpawnSpawnPoints.push(point);
             break;
 
-          case point.Categories.includes("Player") && // (point.Categories.includes("Coop") || )
+          case mapsToExcludeFromPlayerCulling.has(map) &&
+            point.Categories.includes("Player") &&
             !!point.Infiltration:
             coopSpawns.push(point);
             break;
-
           default:
             nonBossSpawns.push(point);
             break;
@@ -105,11 +113,9 @@ export const setupSpawns = (container: DependencyContainer) => {
 
     const limit = mapConfig[configLocations[mapIndex]].spawnMinDistance;
 
-    coopSpawns = cleanClosest(
-      AddCustomPlayerSpawnPoints(coopSpawns, map),
-      mapIndex,
-      true
-    )
+    coopSpawns = AddCustomPlayerSpawnPoints(coopSpawns, map, nonBossSpawns);
+
+    coopSpawns = cleanClosest(coopSpawns, mapIndex, true)
       .map((point, index) => {
         if (point.ColliderParams?._props?.Radius < limit) {
           point.ColliderParams._props.Radius = limit;
@@ -176,7 +182,6 @@ export const setupSpawns = (container: DependencyContainer) => {
     //   ({ BotZoneName }) => BotZoneName?.slice(0, 6) === "Added_"
     // );
     // console.log(
-    //   map,
     //   "sniperSpawnSpawnPoints",
     //   sniperSpawnSpawnPoints.length,
     //   "bossSpawn",
@@ -184,7 +189,8 @@ export const setupSpawns = (container: DependencyContainer) => {
     //   "nonBossSpawns",
     //   nonBossSpawns.length,
     //   "coopSpawns",
-    //   coopSpawns.length
+    //   coopSpawns.length,
+    //   map
     // );
 
     //;

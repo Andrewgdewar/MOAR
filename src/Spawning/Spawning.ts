@@ -145,7 +145,7 @@ export const buildWaves = (container: DependencyContainer) => {
     marksmanChanges(bots);
   }
 
-  updateSpawnLocations(locationList);
+  updateSpawnLocations(locationList, config);
 
   setEscapeTimeOverrides(locationList, _mapConfig, Logger, config);
 

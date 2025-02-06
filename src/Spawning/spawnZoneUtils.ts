@@ -240,39 +240,28 @@ export const AddCustomSniperSpawnPoints = (
 };
 
 export const random360 = () => Math.random() * 360;
+
 export const AddCustomPlayerSpawnPoints = (
   SpawnPointParams: ISpawnPointParam[],
-  map: string
+  map: string,
+  pmcSpawns: ISpawnPointParam[]
 ) => {
   if (!PlayerSpawns[map] || !PlayerSpawns[map].length) {
     _config.debug && console.log("no custom Player spawns for " + map);
     return SpawnPointParams;
   }
 
-  const infilHash: Record<string, Ixyz> = {};
+  const combinedSpawns = [...SpawnPointParams, ...pmcSpawns];
 
-  SpawnPointParams.forEach((point) => {
-    if (!infilHash[point.Infiltration]) {
-      infilHash[point.Infiltration] = point.Position;
-    } else {
-      infilHash[point.Infiltration].x = Math.round(
-        (infilHash[point.Infiltration].x + point.Position.x) / 2
-      );
-      infilHash[point.Infiltration].z = Math.round(
-        (infilHash[point.Infiltration].z + point.Position.z) / 2
-      );
-    }
-  });
-
-  const getClosestInfil = (x: number, y: number, z: number) => {
+  const getClosestInfil = (X: number, Y: number, Z: number) => {
     let closest = Infinity;
-    let selectedInfil = Object.keys(infilHash)[0];
-    Object.keys(infilHash).forEach((infil) => {
-      const current = infilHash[infil];
-      const dist = getDistance(current.x, current.y, current.z, x, y, z);
-      if (dist < closest) {
+    let selectedInfil = "";
+
+    combinedSpawns.forEach(({ Infiltration, Position: { x, y, z } }) => {
+      const dist = getDistance(X, Y, Z, x, y, z);
+      if (!!Infiltration && dist < closest) {
         closest = dist;
-        selectedInfil = infil;
+        selectedInfil = Infiltration;
       }
     });
 
@@ -301,6 +290,8 @@ export const AddCustomPlayerSpawnPoints = (
     Rotation: random360(),
     Sides: ["Pmc"],
   }));
+
+  // TODO: Check infils
 
   return [...SpawnPointParams, ...playerSpawns];
 };

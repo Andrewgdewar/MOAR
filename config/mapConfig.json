@@ -18,7 +18,7 @@
   },
   "factoryDay": {
     "sniperQuantity": 0,
-    "initialSpawnDelay": 10,
+    "initialSpawnDelay": 15,
     "smoothingDistribution": 0.6,
     "mapCullingNearPointValuePlayer": 2,
     "mapCullingNearPointValue": 1.5,
@@ -31,7 +31,7 @@
   },
   "factoryNight": {
     "sniperQuantity": 0,
-    "initialSpawnDelay": 10,
+    "initialSpawnDelay": 15,
     "smoothingDistribution": 0.6,
     "mapCullingNearPointValuePlayer": 2,
     "mapCullingNearPointValue": 1.5,
@@ -130,7 +130,7 @@
   },
   "woods": {
     "sniperQuantity": 2,
-    "initialSpawnDelay": 3,
+    "initialSpawnDelay": 15,
     "smoothingDistribution": 0.9,
     "mapCullingNearPointValuePlayer": 6,
     "mapCullingNearPointValue": 13,
@@ -147,7 +147,7 @@
   },
   "gzLow": {
     "sniperQuantity": 3,
-    "initialSpawnDelay": 10,
+    "initialSpawnDelay": 15,
     "smoothingDistribution": 0.7,
     "mapCullingNearPointValuePlayer": 4,
     "mapCullingNearPointValue": 2,
@@ -159,7 +159,7 @@
   },
   "gzHigh": {
     "sniperQuantity": 3,
-    "initialSpawnDelay": 10,
+    "initialSpawnDelay": 15,
     "smoothingDistribution": 0.7,
     "mapCullingNearPointValuePlayer": 4,
     "mapCullingNearPointValue": 2,
