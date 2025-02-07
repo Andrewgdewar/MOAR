@@ -116,11 +116,8 @@ export const setupSpawns = (container: DependencyContainer) => {
       if (!val.BotZoneName) val.BotZoneName = "custom_snipe_" + index; // TODO: Adjusted this watch for sniper weirdness
       return val;
     });
-    const {
-      spawnMinDistance: limit,
-      pmcWaveCount,
-      scavWaveCount,
-    } = mapConfig[configLocations[mapIndex]];
+
+    const { spawnMinDistance: limit } = mapConfig[configLocations[mapIndex]];
 
     coopSpawns = AddCustomPlayerSpawnPoints(coopSpawns, map, scavSpawns);
 

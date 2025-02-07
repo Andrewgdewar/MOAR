@@ -118,7 +118,7 @@ export default function buildScavMarksmanWaves(
     let sniperLocations = sniperSpawns.map(({ BotZoneName }) => BotZoneName);
     // console.log(sniperLocations);
 
-    const sniperDelay = 25; //TODO update
+    const sniperDelay = 25;
     // Make sure that the sniper spawns permit snipers to actually spawn early.
     const sniperIds = new Set(sniperSpawns.map(({ Id }) => Id));
 
