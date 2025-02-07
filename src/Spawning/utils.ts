@@ -207,6 +207,7 @@ export const buildBotWaves = (
   const pullFromEnd = botDistribution < 1;
   const botToZoneTotal = bossZones.length / botTotal;
   const isMarksman = botType === "marksman";
+  const isPMC = botType === "pmcUSEC" || botType === "pmcBEAR";
 
   let startTime = pushToEnd
     ? Math.round((botDistribution - 1) * escapeTimeLimit)
@@ -228,6 +229,7 @@ export const buildBotWaves = (
       : 0;
 
     if (
+      isPMC ||
       bossEscortAmount < 0 ||
       (bossEscortAmount > 0 && bossEscortAmount + 1 > maxSlotsReached)
     ) {
@@ -242,15 +244,14 @@ export const buildBotWaves = (
     waves.push({
       BossChance: 100,
       BossDifficult,
-      BossEscortAmount: bossEscortAmount.toString(),
+      BossEscortAmount: !!bossEscortAmount
+        ? new Array(5).fill(bossEscortAmount).join(",")
+        : "0",
       BossEscortDifficult: BossDifficult,
       BossEscortType: botType,
       BossName: botType,
       BossPlayer: false,
       BossZone: bossZones[Math.floor(totalCountThusFar * botToZoneTotal)] || "",
-      Delay: 0,
-      DependKarma: false,
-      DependKarmaPVE: false,
       ForceSpawn,
       IgnoreMaxBots: ForceSpawn,
       RandomTimeSpawn: false,
@@ -258,7 +259,7 @@ export const buildBotWaves = (
       Supports: null,
       TriggerId: "",
       TriggerName: "",
-      spawnMode: ["regular", "pve"],
+      spawnMode: isPMC ? ["pve"] : ["regular", "pve"],
     });
 
     startTime += Math.round(totalCountThisWave * averageTime);

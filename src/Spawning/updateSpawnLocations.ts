@@ -26,6 +26,21 @@ export default function updateSpawnLocations(
     });
 
     const playerSpawn: ISpawnPointParam = getRandomInArray(playerSpawns);
+
+    // const convertedPlayerSpawns = playerSpawns
+    //   .filter(({ Id }) => playerSpawn.Id !== Id)
+    //   .map((point, pmcIndex) => ({
+    //     ...point,
+    //     ...{
+    //       ...point,
+    //       BotZoneName: "pmc_recycled" + pmcIndex,
+    //       Categories: ["Bot"],
+    //       Sides: ["Savage"],
+    //       CorePointId: 1,
+    //       type: "pmc",
+    //     },
+    //   }));
+
     const { x, y, z } = playerSpawn.Position;
 
     // console.log(map, playerSpawn.BotZoneName, playerSpawn.Position);
@@ -56,7 +71,8 @@ export default function updateSpawnLocations(
     locationList[index].base.OpenZones = listToAddToOpenZones.join(",");
 
     locationList[index].base.SpawnPointParams.push(
-      ...(config.randomSpawns ? [playerSpawn] : playerSpawns)
+      // ...convertedPlayerSpawns,
+      playerSpawn
     );
   }
 }

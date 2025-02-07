@@ -150,7 +150,7 @@ export default function buildScavMarksmanWaves(
       0.1
     ).map(({ BotZoneName }) => BotZoneName);
 
-    looselyShuffle(scavZones);
+    looselyShuffle(scavZones, 4);
 
     const escapeTimeLimitRatio = Math.round(
       locationList[index].base.EscapeTimeLimit / defaultEscapeTimes[map]

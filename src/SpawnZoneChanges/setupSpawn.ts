@@ -10,6 +10,8 @@ import {
   AddCustomPlayerSpawnPoints,
   AddCustomSniperSpawnPoints,
   cleanClosest,
+  getClosestZone,
+  getFarthestZone,
   removeClosestSpawnsFromCustomBots,
 } from "../Spawning/spawnZoneUtils";
 import { shuffle } from "../Spawning/utils";
@@ -137,13 +139,7 @@ export const setupSpawns = (container: DependencyContainer) => {
             }
           : point;
       })
-      .filter((point) => {
-        // Now we transfer the extra spawns to the bots
-        // if (!point.Categories.length) {
-        //   scavSpawns.push(point);
-        // }
-        return !!point.Categories.length;
-      });
+      .filter((point) => !!point.Categories.length);
 
     if (advancedConfig.ActivateSpawnCullingOnServerStart) {
       botSpawnHash[map] =
@@ -157,37 +153,48 @@ export const setupSpawns = (container: DependencyContainer) => {
     scavSpawns = cleanClosest(
       AddCustomBotSpawnPoints(scavSpawns, map),
       mapIndex
-    ).map((point) => {
-      if (point.ColliderParams?._props?.Radius < limit) {
-        point.ColliderParams._props.Radius = limit;
-      }
+    )
+      .map((point, botIndex) => {
+        if (point.ColliderParams?._props?.Radius < limit) {
+          point.ColliderParams._props.Radius = limit;
+        }
 
-      return !!point.Categories.length
-        ? {
-            ...point,
-            BotZoneName: isGZ ? "ZoneSandbox" : point?.BotZoneName || "",
-            Categories: ["Bot"],
-            Sides: ["Savage"],
-            CorePointId: 1,
-          }
-        : point;
-    });
+        return !!point.Categories.length
+          ? {
+              ...point,
+              BotZoneName: isGZ ? "ZoneSandbox" : point?.BotZoneName,
+              Categories: ["Bot"],
+              Sides: ["Savage"],
+              CorePointId: 1,
+            }
+          : point;
+      })
+      .filter(({ Categories }) => !!Categories.length);
 
-    pmcSpawns = cleanClosest(pmcSpawns, mapIndex).map((point, pmcIndex) => {
-      if (point.ColliderParams?._props?.Radius < limit) {
-        point.ColliderParams._props.Radius = limit;
-      }
+    pmcSpawns = cleanClosest(pmcSpawns, mapIndex)
+      .map((point, pmcIndex) => {
+        if (point.ColliderParams?._props?.Radius < limit) {
+          point.ColliderParams._props.Radius = limit;
+        }
 
-      return !!point.Categories.length
-        ? {
-            ...point,
-            BotZoneName: "pmc_" + pmcIndex,
-            Categories: ["Bot"],
-            Sides: ["Savage"],
-            CorePointId: 1,
-          }
-        : point;
-    });
+        return !!point.Categories.length
+          ? {
+              ...point,
+              BotZoneName: isGZ
+                ? "ZoneSandbox"
+                : getClosestZone(
+                    scavSpawns,
+                    point.Position.x,
+                    point.Position.y,
+                    point.Position.z
+                  ),
+              Categories: ["Coop", "Group"],
+              Sides: ["Pmc"],
+              CorePointId: 0,
+            }
+          : point;
+      })
+      .filter(({ Categories }) => !!Categories.length);
 
     sniperSpawnSpawnPoints = AddCustomSniperSpawnPoints(
       sniperSpawnSpawnPoints,
