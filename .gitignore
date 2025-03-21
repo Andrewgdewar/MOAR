@@ -11,3 +11,7 @@ src/**/*.js.map
 src/*.js.map
 src/**/**.js.map
 src/**/**.js
+
+.idea/
+pnpm-lock.yaml
+package-lock.json
