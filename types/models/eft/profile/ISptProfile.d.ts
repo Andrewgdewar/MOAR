@@ -19,6 +19,8 @@ export interface ISptProfile {
     traderPurchases?: Record<string, Record<string, ITraderPurchaseData>>;
     /** Achievements earned by player */
     achievements: Record<string, number>;
+    /** List of friend profile IDs */
+    friends: string[];
 }
 export declare class ITraderPurchaseData {
     count: number;
@@ -169,6 +171,13 @@ export interface ISpt {
     freeRepeatableRefreshUsedCount?: Record<string, number>;
     /** When was a profile migrated, value is timestamp */
     migrations?: Record<string, number>;
+    /** Cultist circle rewards received that are one time use, key (md5) is a combination of sacrificed + reward items */
+    cultistRewards?: Map<string, IAcceptedCultistReward>;
+}
+export interface IAcceptedCultistReward {
+    timestamp: number;
+    sacrificeItems: string[];
+    rewardItems: string[];
 }
 export interface IModDetails {
     name: string;

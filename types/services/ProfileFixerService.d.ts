@@ -48,6 +48,12 @@ export declare class ProfileFixerService {
      */
     checkForAndFixPmcProfileIssues(pmcProfile: IPmcData): void;
     /**
+     * Resolve any dialogue attachments that were accidentally created using the player's equipment ID as
+     * the stash root object ID
+     * @param fullProfile
+     */
+    checkForAndFixDialogueAttachments(fullProfile: ISptProfile): void;
+    /**
      * Find issues in the scav profile data that may cause issues
      * @param scavProfile profile to check and fix
      */
@@ -87,6 +93,12 @@ export declare class ProfileFixerService {
      * @returns
      */
     protected verifyQuestProductionUnlock(pmcProfile: IPmcData, productionUnlockReward: IQuestReward, questDetails: IQuest): void;
+    /**
+     * Initial release of SPT 3.10 used an incorrect favorites structure, reformat
+     * the structure to the correct MongoID array structure
+     * @param pmcProfile
+     */
+    protected fixFavorites(pmcProfile: IPmcData): void;
     /**
      * If the profile has elite Hideout Managment skill, add the additional slots from globals
      * NOTE: This seems redundant, but we will leave it here just incase.
