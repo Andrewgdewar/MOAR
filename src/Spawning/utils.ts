@@ -253,15 +253,7 @@ export const buildBotWaves = (
       IgnoreMaxBots: ForceSpawn,
       RandomTimeSpawn: false,
       Time: startTime,
-      Supports: bossEscortAmount
-        ? [
-            {
-              BossEscortAmount: bossEscortAmount.toString(),
-              BossEscortDifficult: [BossDifficult],
-              BossEscortType: botType,
-            },
-          ]
-        : null,
+      Supports: null,
       TriggerId: "",
       TriggerName: "",
       SpawnMode: isPMC ? ["pve"] : ["regular", "pve"],
