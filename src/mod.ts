@@ -3,6 +3,7 @@ import { IPostSptLoadMod } from "@spt/models/external/IPostSptLoadMod";
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
 import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
 import { enableBotSpawning } from "../config/config.json";
+import { enableDifficultyChanges } from "../config/difficultyConfig.json";
 import { buildWaves } from "./Spawning/Spawning";
 import config from "../config/config.json";
 import { globalValues } from "./GlobalValues";
@@ -10,10 +11,14 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { setupRoutes } from "./Routes/routes";
 import checkPresetLogic from "./Tests/checkPresets";
 import { setupSpawns } from "./SpawnZoneChanges/setupSpawn";
-import { saveToFile } from "./utils";
+import {
+  BotDBChanges,
+  BotRoutersAndGen,
+} from "./BotDifficultyChanges/BotDifficultyChanges";
 
 class Moar implements IPostSptLoadMod, IPreSptLoadMod, IPostDBLoadMod {
   preSptLoad(container: DependencyContainer): void {
+    enableDifficultyChanges && BotRoutersAndGen(container);
     if (enableBotSpawning) {
       setupRoutes(container);
     }
@@ -26,6 +31,7 @@ class Moar implements IPostSptLoadMod, IPreSptLoadMod, IPostDBLoadMod {
   }
 
   postSptLoad(container: DependencyContainer): void {
+    enableDifficultyChanges && BotDBChanges(container);
     if (enableBotSpawning) {
       checkPresetLogic(container);
       globalValues.baseConfig = config;

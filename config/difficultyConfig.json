@@ -1,0 +1,24 @@
+{
+  "enableDifficultyChanges": true,
+  "overallDifficultyModifier": 0.3,
+  "randomScavBrainChance": 0.2,
+  "randomPmcBrainChance": 0.2,
+  "randomMarksmanBrainChance": 0.2,
+  "debug": false,
+  "easyEXAMPLE": {
+    "enableDifficultyChanges": true,
+    "overallDifficultyModifier": 0,
+    "randomScavBrainChance": 0.2,
+    "randomPmcBrainChance": 0.2,
+    "randomMarksmanBrainChance": 0.1,
+    "debug": false
+  },
+  "hardEXAMPLE": {
+    "enableDifficultyChanges": true,
+    "overallDifficultyModifier": 2.5,
+    "randomScavBrainChance": 0.3,
+    "randomPmcBrainChance": 0,
+    "randomMarksmanBrainChance": 0.4,
+    "debug": false
+  }
+}
